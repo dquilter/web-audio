@@ -1,3 +1,7 @@
+body {
+    font-family:Arial;
+}
+
 *, *:before, *:after {
     box-sizing: border-box;
 }
@@ -33,4 +37,70 @@ main {
 .message-container .message:first-of-type {
 	display: block;
 }
+/*------------------------------------------------------------------*/
 
+.hblock {
+height:100px;
+background-color:aquamarine;
+    opacity: 0.4;
+    position: absolute;
+    width: 100%;
+    margin-top:500px;
+    z-index: -1;
+    
+
+}
+#merry-xmas {
+  height:100%;
+  position:relative;
+
+}
+.box {
+  width:50px;
+  height:50px;
+  position:relative;
+  border-radius:6px;
+  margin-top:4px;
+  display:inline-block;
+  font-size:3em;
+    font-family: 'Mountains of Christmas', cursive;
+}
+
+.shead {    border: solid 1px red;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    margin-left: 100px;
+}
+
+.sbody { border: solid 1px red;
+    border-radius: 50%;
+    width: 400px;
+    height: 400px;
+        
+}
+.seye1 {border: solid 1px red; background-color:#000;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+        float: left;
+    margin-top: 40px;
+    margin-left: 40px;
+}
+.seye2 {border: solid 1px red; background-color:#000;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+        float: left;
+    margin-left: 20px;
+        margin-top: 40px;
+}
+.snose {
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 20px 0 20px 100px;
+border-color: transparent transparent transparent orange;
+margin-top: 100px;
+    margin-left: 40%;
+}

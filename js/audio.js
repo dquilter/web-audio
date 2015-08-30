@@ -5,9 +5,16 @@ var itsChristmas = {
 	frequencyArray: [440, 493, 261, 293, 329, 349, 392],
 	counter: 0,
 	step: 0,
+    opacityInc: 0.02857142857,
+    newOpacity: null ,
 	
+//2.85714285714
 	init: function() {
 
+        
+        //hide the image
+        $('.img-snowman').css({"opacity":"0"});
+        
 		try {
 			// Fix up for prefixing
 			window.AudioContext = window.AudioContext||window.webkitAudioContext;
@@ -54,7 +61,6 @@ var itsChristmas = {
 				
 				// First note in step
 				newNote = itsChristmas.sequence[itsChristmas.step][itsChristmas.counter];
-
 				newNoteElem = document.querySelector('[data-note="' + newNote + '"]');
 				newNoteElem.classList.add('highlight');
 				
@@ -74,13 +80,28 @@ var itsChristmas = {
 						if (newNote === null) {
 							highlightNote(newNote, 1200);						
 						} else {
-							highlightNote(newNote, 200);
+							highlightNote(newNote, 200);   
+                            
+                            var oldOpacity = $(".img-snowman").css("opacity");                    
+                            newOpacity = parseFloat(oldOpacity) + parseFloat(0.02857142857);
+                            
+                            $(".img-snowman").removeAttr("style");
+                            $(".img-snowman").css({"opacity":newOpacity}); 
+                            
 						}
 						
 					} else {
 						// Otherwise, move to next step
 						nextStep = parseInt(itsChristmas.step, 10) + 1;
+                        //console.log("nextstep:" + nextStep);
+                        if (nextStep == 6) {
+                            //$("#merry-xmas").removeAttr("style");
+                            //$('#merry-xmas').css({'opacity':'1'})
+                            //TweenMax.staggerTo(".box", 1, {rotation:360, y:100}, 0.2 , {css:{scale:2, opacity:1}});
+                        }
 						itsChristmas.nextStep(nextStep)
+                        
+                        
 					}
 				} else {
 					// They got it wrong
@@ -99,7 +120,20 @@ var itsChristmas = {
 					itsChristmas.checkPosition('null');
 				} else {
 					newNoteElem.classList.add('highlight');
-					itsChristmas.updateButtons('auto')
+					itsChristmas.updateButtons('auto');
+                                  
+                    var p = $( newNoteElem );
+                    var position = p.position();
+                    var newPos;
+                    //console.log('pos'+ position.left);
+                    newPos = position.left - parseFloat(58);
+                    
+                    //move element clone
+                    $(newNoteElem).clone().addClass('cloned').css({'margin-left':newPos, 'width':'135px'}).insertAfter('.button-container');
+                    //$(newNoteElem).closest('span[data-note="' + newNote + '"]').remove();
+                    
+                    $('.cloned').animate({ 'marginTop': '360px'}, 1000);
+                    //$('.cloned').remove();
 				}
 			}, delay);
 		}
@@ -163,7 +197,16 @@ var itsChristmas = {
 		gainNode.gain.exponentialRampToValueAtTime(0.1, context.currentTime + array[3]);
 		gainNode.gain.linearRampToValueAtTime(0, context.currentTime + array[4]);
 		oscillator.start(context.currentTime);
-	}
+	},
+    
+    
+    spacebar: function() {
+    alert('1');
+    // if spacebar clicked...
+        $(document).keypress(function(event){
+             alert('Handler for .keypress() called. - ' + event.charCode);
+        });
+    }
 }
 
 window.onload = itsChristmas.init();
