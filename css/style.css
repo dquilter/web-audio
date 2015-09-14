@@ -1,21 +1,25 @@
 body {
-    font-family:Arial;
+    font-family: Arial;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
     box-sizing: border-box;
 }
 
 main {
-	max-width: 1240px;
-	width: 90%;
-	margin: 0 auto;
+    max-width: 1240px;
+    width: 90%;
+    margin: 0 auto;
 }
 
 .button-container {
-	display: flex;
+    display: flex;
 }
 
+
+/*
 .button {
 	flex: 1 1 auto;
 	display: block;
@@ -27,80 +31,318 @@ main {
 	color: #FFF;
 	transition: box-shadow 0.5s;
 }
+*/
+
+.button {
+    flex: 1 1 auto;
+    display: block;
+    width: 100px;
+    padding: 10px 5px;
+    margin: 0 1% 10px;
+    text-align: center;
+    background-color: cadetblue;
+    color: #FFF;
+    transition: box-shadow 0.5s;
+    border-radius: 8px;
+    border: solid 1px #0B9EA2;
+}
+
 .button.highlight {
-	box-shadow: 0 0 3px 4px goldenrod;
+    box-shadow: 0 0 3px 4px goldenrod;
 }
 
 .message-container .message {
-	display: none;
+    display: none;
 }
+
 .message-container .message:first-of-type {
-	display: block;
+    display: block;
 }
+
+
 /*------------------------------------------------------------------*/
 
+#playgame i.fa {
+    text-shadow: 3px 5px 0px #1C8835;
+}
+
+.cloned i.fa {
+    text-shadow: 1px 1px 0px #000;
+}
+
+.slidetext:first-child {
+    margin-left: -20px;
+
+}
+
+.slidetext {
+    color: #D490A4;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.instructions {
+    margin-top:50px;
+    color:#c4c4c4;
+}
+
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background: #D490A4;
+    margin-top: -25px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+}
+
 .hblock {
-height:100px;
-background-color:aquamarine;
+    height: 150px;
+    background-color: #86E49C;
     opacity: 0.4;
     position: absolute;
     width: 100%;
-    margin-top:500px;
+    margin-top: 500px;
     z-index: -1;
-    
-
 }
+
+#playgame {
+    width: 100px;
+    height: 100px;
+    background-color: #34D159;
+    padding: 70px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 40px;
+    color: #FFF;
+    z-index: 2;
+}
+
+#playgame i {
+    margin-top: 0px;
+    position: absolute;
+    top: 50px;
+    margin-left: -10px;
+}
+
+.blue {
+    background-color: #90B1D4;
+    border: solid 1px #1875D8;
+}
+
+.red {
+    background-color: #D490A1;
+    border: solid 1px #1875D8;
+}
+
+.yellow {
+    background-color: #D1D490;
+    border: solid 1px #CED61D;
+}
+
+.orange {
+    background-color: #D4A190;
+    border: solid 1px #D24C1F;
+}
+
+.purple {
+    background-color: #C590D4;
+    border: solid 1px #A91FD0;
+}
+
+.hit-msg {
+    font-size: 70px;
+    /*40*/
+    text-align: center;
+    margin-top: 40px;
+    /*60*/
+    color: #D490A4;
+    position: relative;
+    z-index: 1;
+}
+
+.hit-msg-pop {
+    -webkit-animation: pop-in 0.5s;
+}
+
+@-webkit-keyframes pop-in {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(1);
+    }
+    50% {
+        opacity: 0;
+        -webkit-transform: scale(1.5);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+    }
+}
+
+@keyframes pop-in {
+    0% {
+        opacity: 0;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.clone-container {
+    margin-left: -30%;
+}
+
+.points {
+    border-radius: 50%;
+    background-color: #3492D1;
+    width: 100px;
+    height: 100px;
+    font-size: 30px;
+    font-weight: bold;
+    top: 10px;
+    position: absolute;
+    padding: 70px;
+    left: 20px;
+}
+
+.ptext {
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: -110px;
+    text-align: center;
+    margin-left: 30px;
+    width: 100px;
+    z-index: 1;
+    position: absolute;
+    color: #FFF;
+    /*        text-shadow: 5px 5px 5px #0C5180;*/
+    text-shadow: 0 1px 0 #696969, 0 2px 0 #0C5180, 0 3px 0 #0C5180, 0 4px 0 #0C5180, 0 5px 0 #0C5180
+}
+
+.btn-slide {
+    -webkit-animation-name: slidebox;
+    /* Chrome, Safari, Opera */
+    -webkit-animation-duration: 4s;
+    /* Chrome, Safari, Opera */
+    animation-name: slidebox;
+    animation-duration: 4s;
+    animation-play-state: running;
+}
+
+@-webkit-keyframes slidebox {
+    from {
+        top: 0;
+    }
+    to {
+        margin-top: 100px;
+    }
+}
+
+
+/* Standard syntax */
+
+@keyframes slidebox {
+    from {
+        top: 0;
+    }
+    to {
+        margin-top: 100px;
+    }
+}
+
 #merry-xmas {
-  height:100%;
-  position:relative;
-
+    height: 100%;
+    position: relative;
 }
+
 .box {
-  width:50px;
-  height:50px;
-  position:relative;
-  border-radius:6px;
-  margin-top:4px;
-  display:inline-block;
-  font-size:3em;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border-radius: 6px;
+    margin-top: 4px;
+    display: inline-block;
+    font-size: 3em;
     font-family: 'Mountains of Christmas', cursive;
 }
 
-.shead {    border: solid 1px red;
+.speedbox {
+    width: 60%;
+    margin: 0px auto;
+    margin-top: 500px;
+    text-align: center;
+}
+
+.shead {
+    border: solid 1px red;
     border-radius: 50%;
     width: 200px;
     height: 200px;
     margin-left: 100px;
 }
 
-.sbody { border: solid 1px red;
+.sbody {
+    border: solid 1px red;
     border-radius: 50%;
     width: 400px;
     height: 400px;
-        
 }
-.seye1 {border: solid 1px red; background-color:#000;
+
+.seye1 {
+    border: solid 1px red;
+    background-color: #000;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-        float: left;
+    float: left;
     margin-top: 40px;
     margin-left: 40px;
 }
-.seye2 {border: solid 1px red; background-color:#000;
+
+.seye2 {
+    border: solid 1px red;
+    background-color: #000;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-        float: left;
+    float: left;
     margin-left: 20px;
-        margin-top: 40px;
+    margin-top: 40px;
 }
+
 .snose {
-width: 0;
-height: 0;
-border-style: solid;
-border-width: 20px 0 20px 100px;
-border-color: transparent transparent transparent orange;
-margin-top: 100px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 20px 0 20px 100px;
+    border-color: transparent transparent transparent orange;
+    margin-top: 100px;
     margin-left: 40%;
 }
