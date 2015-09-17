@@ -9,20 +9,11 @@ var itsChristmas = {
     newOpacity: null,
     points: 0,
     speed: 1000,
-
-
     init: function () {
-
-
         $('#slider').on('change', function () {
             $('#slider-text').text($('#slider').val());
             itsChristmas.speed = $('#slider').val();
         });
-
-        $('.img-snowman').css({
-            "opacity": "0"
-        });
-
         try {
             // Fix up for prefixing
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -30,13 +21,6 @@ var itsChristmas = {
         } catch (e) {
             alert('Web Audio API is not supported in this browser');
         }
-
-        itsChristmas.buttons = document.querySelectorAll('.button');
-
-        for (i = 0; i < itsChristmas.buttons.length; i++) {
-            itsChristmas.buttons[i].onclick = itsChristmas.createDing;
-        }
-
         itsChristmas.centerPlay();
 
         $('#playgame').click(function () {
@@ -46,9 +30,10 @@ var itsChristmas = {
                 "marginLeft": w,
                 "top": "10px"
             }, "slow");
-            itsChristmas.autoDing();
-            itsChristmas.spacebar();
-
+        
+            var soundFactors = ['sine', 0.2, 1.2, 1.5];
+            // itsChristmas.setupNewGame(100,soundFactors);
+            itsChristmas.setupStages();
             if ($('#playgame i').hasClass('play')) {
                 $('.points, .ptext').fadeIn(1000);
 
@@ -59,17 +44,54 @@ var itsChristmas = {
                 });
                 $('.speedbox').fadeOut(500);
             } else {
-                console.log('2');
+                //console.log('2');
                 $("*").stop(true, true);
                 window.location.reload(true);
             }
         });
-
-
-
-
     },
+    gameStageInfo: [
+        {
+            speed : 800,
+            soundFactors : ['square', 0.2, 1.2, 1.5]
+        },
+        {
+            speed : 600,
+            soundFactors : ['triangle', 0.2, 1.2, 1.5]
+        },
+        {
+            speed : 500,
+            soundFactors : ['square', 0.2, 1.2, 1.5]
+        }
+    ],
+    setupNewGame: function(speed,soundFactors,callback){
+        itsChristmas.cloneAndAnimate(speed,function(){
+            callback();
+        });
+        itsChristmas.spacebar(soundFactors);
+    },
+    playGame: function(index,callback) {
+        $(".stage").find('em').text(index+1).end().show(500);
+        setTimeout(function() {
+        var game_info = itsChristmas.gameStageInfo[index];
+        var game_speed = game_info.speed;
+        var game_soundFactors = game_info.soundFactors;
+          $(".stage").hide(500);
+          itsChristmas.setupNewGame(game_speed,game_soundFactors,function(){
+            callback();
+        });
+    }, 1500);
+    },
+    setupStages: function() {
+        itsChristmas.playGame(0,function(){
+            itsChristmas.playGame(1,function(){
+                itsChristmas.playGame(2,function(){
+                    console.log('end');
+                });
+            });
 
+        });
+    },
     centerPlay: function () {
         //center the play button pn doc
         var w = $(window).width();
@@ -105,11 +127,6 @@ var itsChristmas = {
             itsChristmas.buttons[i].style.pointerEvents = style;
         }
     },
-
-    wrong: function () {
-        console.log('Wrong!');
-    },
-
     nextStep: function (next) {
         //console.log(next);
         var oldStep = document.querySelector('[data-message="' + (next - 1) + '"]');
@@ -123,176 +140,7 @@ var itsChristmas = {
 
         itsChristmas.checkPosition();
     },
-
-    nextStepNew: function (next) {
-        //var next = next - 1;
-
-        //if (!isNaN(next)){
-        //            var oldStep = document.querySelector('[data-message="' + (next - 1) + '"]');
-        //            var newStep = document.querySelector('[data-message="' + next + '"]');
-        //
-        //            itsChristmas.counter = 0;
-        //            itsChristmas.step++;
-        //
-        //            oldStep.style.display = 'none';
-        //            newStep.style.display = 'block';
-        //
-        //            itsChristmas.checkPosition();
-        //}
-
-    },
-
-
-
-    checkPosition: function (note, sequenceNumber) {
-        var newNote;
-        var newNoteElem;
-        var oldNote;
-        var nextStep;
-
-        //console.log(arrayVal);
-        //newNote = arrayVal;
-
-        itsChristmas.hideCloned();
-
-        if (itsChristmas.step === 0) {
-
-            // Let user play 5 notes on first step
-            if (itsChristmas.counter < 4) {
-                itsChristmas.counter++;
-            } else {
-                itsChristmas.nextStep(1);
-            }
-            //console.log(sequenceNumber);
-            //itsChristmas.nextStep(sequenceNumber);
-
-        } else {
-
-            if (note === undefined) {
-                // First note in step           
-                newNote = itsChristmas.sequence[itsChristmas.step][itsChristmas.counter];
-                //newNote = 4;
-                newNoteElem = document.querySelector('[data-note="' + newNote + '"]');
-                newNoteElem.classList.add('highlight');
-
-                //console.log('nreNote:' + newNote + ' newNoteElem:' + newNoteElem);
-
-            } else {
-
-                // Subsequent notes
-                oldNote = itsChristmas.sequence[itsChristmas.step][itsChristmas.counter];
-                //console.log('xoldnote' +oldNote);
-
-                // Check the right note was played
-                if (parseInt(note, 10) === parseInt(oldNote, 10) || note === 'null') {
-                    // Have we played all of the notes?
-                    if (itsChristmas.counter + 1 !== itsChristmas.sequence[itsChristmas.step].length) {
-                        // If not, highlight the new note
-                        itsChristmas.counter++;
-                        newNote = itsChristmas.sequence[itsChristmas.step][itsChristmas.counter];
-
-                        if (newNote === null) {
-                            highlightNote(newNote, 1200);
-                        } else {
-                            highlightNote(newNote, 200);
-
-                            //                            var oldOpacity = $(".img-snowman").css("opacity");                    
-                            //                            newOpacity = parseFloat(oldOpacity) + parseFloat(0.02857142857);
-                            //                            
-                            //                            $(".img-snowman").removeAttr("style");
-                            //                            $(".img-snowman").css({"opacity":newOpacity}); 
-
-                        }
-
-                    } else {
-                        // Otherwise, move to next step
-                        nextStep = parseInt(itsChristmas.step, 10) + 1;
-                        //console.log("nextstep:" + nextStep);
-                        if (nextStep == 6) {
-                            //$("#merry-xmas").removeAttr("style");
-                            //$('#merry-xmas').css({'opacity':'1'})
-                            //TweenMax.staggerTo(".box", 1, {rotation:360, y:100}, 0.2 , {css:{scale:2, opacity:1}});
-                        }
-                        itsChristmas.nextStep(nextStep)
-
-
-                    }
-                } else {
-                    // They got it wrong
-                    itsChristmas.wrong();
-                }
-            }
-
-        }
-
-        function highlightNote(newNote, delay) {
-            //console.log("newnote:" + newNote + ' delay:' + delay);
-            var newNoteElem = document.querySelector('[data-note="' + newNote + '"]');
-            itsChristmas.updateButtons('none')
-            window.setTimeout(function () {
-                if (newNote === null) {
-                    itsChristmas.updateButtons('auto')
-                    itsChristmas.checkPosition('null');
-                } else {
-                    newNoteElem.classList.add('highlight');
-                    itsChristmas.updateButtons('auto');
-
-                    var p = $(newNoteElem);
-                    var position = p.position();
-                    var newPos;
-                    //console.log('pos'+ position.left);
-                    newPos = position.left - parseFloat(58);
-
-                    //move element clone
-                    $(newNoteElem).clone().addClass('cloned').css({
-                        'margin-left': newPos,
-                        'width': '135px'
-                    }).insertAfter('.button-container');
-                    //$(newNoteElem).closest('span[data-note="' + newNote + '"]').remove();
-
-                    var winHeight = $(window).height();
-                    //console.log(winHeight);
-                    var clonedMargin = winHeight - 250;
-
-                    $('.cloned').animate({
-                        'marginTop': clonedMargin
-                    }, 1000); //360px
-
-                    itsChristmas.hideCloned();
-                    //$('.cloned').remove();
-                }
-            }, delay);
-        }
-
-    },
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-
-
-    autoDing: function () {
+    cloneAndAnimate: function (speed,callback) {
         itsChristmas.counter = 0;
 
         for (j = 1; j < 6; j++) {
@@ -304,12 +152,15 @@ var itsChristmas = {
                 if (typeof seq == 'undefined') {
 
                 } else {
+                    //
                     if (itsChristmas.sequence[j][i] == 99) {
                         console.log('last note')
-                        animateClone();
+                        animateClone(speed,function(){
+                            $('.clone-container a').remove();
+                            callback();
+                        });
                         return;
                     } else {
-
                         //var interval = setInterval(function() {
                         itsChristmas.checkPositionNew(itsChristmas.sequence[j][i], j);
                         //}, 1000);
@@ -321,27 +172,49 @@ var itsChristmas = {
                 }
             }
         }
-
-        function animateClone() {
+        function animateClone(speed,callback) {
             var winHeight = $(window).height();
-            var clonedMargin = winHeight - 50; //- 250;    
-            var dropSpeed = $('#speed').attr('value');
-
+            var clonedMargin = winHeight - 50; //- 250;
+            var dropSpeed;
+            if(typeof speed == "undefined")    
+                dropSpeed = $('#speed').attr('value');
+            else
+                dropSpeed = speed;
             //default speed value 1000
-
-            $($('.cloned').get().reverse()).each(function (i) {
-                $(this).delay(i * itsChristmas.speed).animate({
+                var clonedElsArray =  $($('.cloned').get().reverse());
+                var numOfCloned =  clonedElsArray.length;
+                clonedElsArray.each(function (i) {
+                    console.log($(this),i);
+                  $('#clone0').addClass('animates');
+                $(this).stop().delay(i * dropSpeed).animate({
                     'margin-top': clonedMargin,
                     'top': 0,
                     'display': 'block'
-                }, 2000);
+                }, 2000, function(){
+                    $(this).removeClass('animates');
+                    $(this).prev().addClass('animates');
+                    $(this).fadeOut();
+
+                    //last note fell
+                    if (i===numOfCloned-1) {
+                       callback();
+                    }
+
+                });
+                var _this = $(this);
+                    // setTimeout(function() {
+                    //     _this.addClass('animates');
+                    // }, i*itsChristmas.speed);
+
+                    // setTimeout(function() {
+                    //     $(this).removeClass('animates');
+                    // }, i*itsChristmas.speed+2000);
 
             });
         }
-        animateClone();
+        //not needed
+        //animateClone();
     },
-
-
     checkPositionNew: function (note, arrayNum) {
         var newNote;
         var newNoteElem;
@@ -368,10 +241,9 @@ var itsChristmas = {
             } else {
                 //console.log('2');
                 newNoteElem = document.querySelector('[data-note="' + newNote + '"]');
-                //newNoteElem.classList.add('highlight');
-                //itsChristmas.updateButtons('auto');
+                // itsChristmas.updateButtons('auto');
 
-                //console.log(newNote);
+                // console.log(newNote);
 
                 var p = $(newNoteElem);
                 var position = p.position();
@@ -393,82 +265,22 @@ var itsChristmas = {
 
                 var winHeight = $(window).height();
                 var clonedMargin = winHeight - 250;
-
-                //console.log(newClone);
-
-                //                    function runit() {
-                //                        $(newClone).animate({ 'marginTop': clonedMargin}, 1000); //360px
-                //                    }
-                //                    
-                //                    function showit() {
-                //                        var n = $(newClone).queue( "fx" ); //queue name is called fx
-                //                        $( "span" ).text( n.length );
-                //                        setTimeout( showit, 1000 );
-                //                    }
-
-
-                //                    function animateClone(elem) {
-                ////                        $(elem).animate(
-                ////                           { 'marginTop': clonedMargin}
-                ////                        , { duration: 1000, queue: true });
-                //                        //$('#clone33').animate({ 'marginTop': clonedMargin}, { duration: 1000}); //360px
-                //                        for (i=0; i <35; i++) {
-                //                            var cloneid = '#clone' + i;
-                //                            console.log(cloneid);
-                //                            $(cloneid).delay(1000).animate({ 'marginTop': clonedMargin}, { duration: 1000}); //360px
-                //                        }
-                //                        //$('#clone34').delay(1000).animate({ 'marginTop': clonedMargin}, { duration: 1000}); //360px
-                //                        
-                //                    }
-
-                //animateClone(newClone);
-
-                //runit();
-                //showit();
-
                 itsChristmas.counter++;
+                //not used
                 itsChristmas.hideCloned();
             }
             //}, delay);
         }
     },
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-    createDingNew: function (elem) {
-
-
+    createDingNew: function (elem,soundArray) {
+        // var frequency;
+        // if (sound!="undefined") {
+        //     frequency = $(elem).attr("data-note");
+        // }
+        // else {
+        //     frequency = sound;
+        // }
         //var frequency = $('#clone0').getAttribute('data-note');
-        var frequency = $(elem).attr("data-note");
         var noteElem = $(elem);
 
         //console.log('freq:' + frequency);
@@ -478,34 +290,14 @@ var itsChristmas = {
             //noteElem.classList.remove('highlight');
         }
 
-        // [frequency, type, startTime, fadeMidTime, fadeEndTime]
-        var baseArray = [itsChristmas.frequencyArray[frequency], 'triangle', 0, 0.5, 1];
-        var depthArray = [itsChristmas.frequencyArray[frequency], 'square', 0.2, 1.2, 1.5];
+        // // [frequency, type, startTime, fadeMidTime, fadeEndTime]
+        // var baseArray = [itsChristmas.frequencyArray[frequency], 'triangle', 0, 0.5, 1];
+        // var depthArray = [itsChristmas.frequencyArray[frequency], 'square', 0.2, 1.2, 1.5];
+        // var boingArray = [itsChristmas.frequencyArray[frequency], 'custom', 0.2, 1.2, 1.5];
 
-        itsChristmas.createSound(baseArray);
-        itsChristmas.createSound(depthArray);
-    },
-
-
-    createDing: function (evt) {
-        //console.log(evt);
-        evt.preventDefault();
-        var frequency = this.getAttribute('data-note');
-        //console.log(frequency);
-
-        var noteElem = document.querySelector('.highlight');
-        if (noteElem !== null) {
-            noteElem.classList.remove('highlight');
-        }
-
-        // [frequency, type, startTime, fadeMidTime, fadeEndTime]
-        var baseArray = [itsChristmas.frequencyArray[frequency], 'triangle', 0, 0.5, 1];
-        var depthArray = [itsChristmas.frequencyArray[frequency], 'square', 0.2, 1.2, 1.5];
-
-        itsChristmas.createSound(baseArray);
-        itsChristmas.createSound(depthArray);
-
-        itsChristmas.checkPosition(frequency);
+        // itsChristmas.createSound(baseArray);
+        // itsChristmas.createSound(depthArray);
+        itsChristmas.createSound(soundArray);
     },
 
     createSound: function (array) {
@@ -517,19 +309,17 @@ var itsChristmas = {
         oscillator.frequency.value = array[0]; // value in hertz
         oscillator.connect(gainNode);
         gainNode.connect(context.destination);
-
+        //context.currentTime - double representing an ever-increasing hardware timestamp in seconds 
         gainNode.gain.exponentialRampToValueAtTime(1, context.currentTime + array[2]);
         gainNode.gain.exponentialRampToValueAtTime(0.1, context.currentTime + array[3]);
         gainNode.gain.linearRampToValueAtTime(0, context.currentTime + array[4]);
         oscillator.start(context.currentTime);
     },
 
-
-    spacebar: function () {
+    spacebar: function (soundArray) {
         // if spacebar pressed...
         $(document).keypress(function (event) {
             if (event.keyCode == 32) {
-
                 
                 var alreadyRan = false;
                 var htop = $('.hblock').offset().top; //top pos of hblock
@@ -540,25 +330,23 @@ var itsChristmas = {
                 
                 for (i = 0; i < 35; i++) {
 
-                        sCounter++;
-                    console.log(sCounter);
+                    sCounter++;
+                    //console.log(sCounter);
                     var clonedElem = '#clone' + i;
                     var yPos = $(clonedElem).offset().top;
                     
                     var staticElem = $(clonedElem);
                     //console.log(staticElem);
-                    
-                    if ($(clonedElem).is(':animated')) {
-                        
-                        
-                        var cElem = $(clonedElem).is(':animated');
-                        var curPos = $(clonedElem).offset().top;
+                    var frequency = $(clonedElem).attr("data-note");
 
-                        //console.log('curPos:' + curPos  + 'htop:' + htop + ' hbot:' + hbot);
-                        
+                    if ($(clonedElem).is('.animates')) {
+                        var cElem = $(clonedElem).is('.animates');
+                        var curPos = $(clonedElem).offset().top;
+                        $(clonedElem).hide();
+                        $(clonedElem).removeClass('animates');
+
+                        // console.log('curPos:' + curPos  + 'htop:' + htop + ' hbot:' + hbot);
                         if (curPos > htop && curPos < hbot) {
-                            
-                            //console.log('animation');
                             
                             var max = itsChristmas.pointResponse[1].length;
                             var min = 0;
@@ -572,24 +360,37 @@ var itsChristmas = {
 
                             $('.hit-msg').text(ran);
                             //console.log(ran);
-                            itsChristmas.createDingNew(clonedElem);
+                            $(clonedElem).removeClass('highlight');
+                            $(clonedElem).addClass('correct');
+                            var frequencyArray = [itsChristmas.frequencyArray[frequency]];
+                            var depthArray = $.merge(frequencyArray, soundArray);
+                            // itsChristmas.createDingNew(clonedElem,depthArray);
+                            itsChristmas.createSound(depthArray);
                             itsChristmas.points += 25;
                             $('.ptext').text(itsChristmas.points);
+                                console.log('correct');
 
                         } else {
-                            
-                            //console.log('curPos:' + curPos  + 'htop:' + htop + ' hbot:' + hbot);
-                            if ( staticElem == $(clonedElem) ) {//if (curPos < 0 || curPos > 540) {
-                            
-                                //console.log('no animation');
+                            $(clonedElem).removeClass('animates');
+                            if ($(clonedElem).not('.correct')) {
+                                $(clonedElem).removeClass('highlight');
+                                $(clonedElem).addClass('error');
+                                console.log('error');
+                                var boingArray = [800, 'square', 0.2, 1.2, 1.3];
+                                itsChristmas.createDingNew(clonedElem,boingArray);
+                                //console.log('curPos:' + curPos  + 'htop:' + htop + ' hbot:' + hbot);
                                 var max =  itsChristmas.pointResponse[2].length;
                                 var min = 0;
                                 var ran = Math.floor((Math.random() * max) + min);
                                 ran = itsChristmas.pointResponse[2][ran];
+                                itsChristmas.points -= 50;
+                                $('.ptext').text(itsChristmas.points);
+
+                                console.log(itsChristmas.points);
                                 //console.log(ran);
                                 $('.hit-msg').text(ran);
+                            // }
                             }
-
                         }
                     }
                 }
@@ -606,14 +407,10 @@ var itsChristmas = {
                 var clonedItemHeight = $(this).offset().top;
                 //console.log('c:'+clonedItemHeight);
                 if (clonedItemHeight > 500) {
-                    //$(this).css({"display":"none"});
+                    $(this).css({"display":"none"});
                 }
             });
         }
-
     }
-
-
 }
-
 window.onload = itsChristmas.init();

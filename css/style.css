@@ -13,7 +13,30 @@ main {
     width: 90%;
     margin: 0 auto;
 }
-
+.stage {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    position: absolute;
+    text-align: center;
+    left: 0;
+    top: 0;
+    font-size: 90px;
+    display: none;
+    -webkit-transition: all .8s ease-in-out;
+    -moz-transition: all .8s ease-in-out;
+    -o-transition: all .8s ease-in-out;
+    transition: all .8s ease-in-out;
+}
+    
+.stage p {
+    margin-top: 200px;
+    color: goldenrod;
+}
+.stage p em {
+   font-style: normal;
+}
 .button-container {
     display: flex;
 }
@@ -47,8 +70,14 @@ main {
     border: solid 1px #0B9EA2;
 }
 
-.button.highlight {
+.button.animates {
     box-shadow: 0 0 3px 4px goldenrod;
+}
+.button.error {
+    box-shadow: 0 0 3px 4px red;
+}
+.button.correct {
+    box-shadow: 0 0 3px 4px green;
 }
 
 .message-container .message {
@@ -117,12 +146,12 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 .hblock {
-    height: 150px;
+    height: 100px;
     background-color: #86E49C;
     opacity: 0.4;
     position: absolute;
     width: 100%;
-    margin-top: 500px;
+    top: 400px;
     z-index: -1;
 }
 
