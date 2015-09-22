@@ -181,7 +181,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .hblock {
     height: 150px;
-    /*background: url(../images/kid2.png) no-repeat center -20px;*/
+    background: url(../images/kid2.png) no-repeat center -20px;
     background-size: 150px auto;
     z-index: 5000;
     position: absolute;
