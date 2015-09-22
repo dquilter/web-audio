@@ -52,15 +52,15 @@ var itsChristmas = {
     },
     gameStageInfo: [
         {
-            speed : 800,
+            speed : 1200,
             soundFactors : ['square', 0.2, 1.2, 1.5]
         },
         {
-            speed : 600,
+            speed : 1000,
             soundFactors : ['triangle', 0.2, 1.2, 1.5]
         },
         {
-            speed : 500,
+            speed : 800,
             soundFactors : ['square', 0.2, 1.2, 1.5]
         }
     ],
@@ -73,14 +73,14 @@ var itsChristmas = {
     playGame: function(index,callback) {
         $(".stage").find('em').text(index+1).end().show(500);
         setTimeout(function() {
-        var game_info = itsChristmas.gameStageInfo[index];
-        var game_speed = game_info.speed;
-        var game_soundFactors = game_info.soundFactors;
-          $(".stage").hide(500);
-          itsChristmas.setupNewGame(game_speed,game_soundFactors,function(){
-            callback();
-        });
-    }, 1500);
+            var game_info = itsChristmas.gameStageInfo[index];
+            var game_speed = game_info.speed;
+            var game_soundFactors = game_info.soundFactors;
+              $(".stage").hide(500);
+              itsChristmas.setupNewGame(game_speed,game_soundFactors,function(){
+                callback();
+            });
+        }, 1500);
     },
     setupStages: function() {
         itsChristmas.playGame(0,function(){
@@ -190,7 +190,7 @@ var itsChristmas = {
                     'margin-top': clonedMargin,
                     'top': 0,
                     'display': 'block'
-                }, 2000, function(){
+                }, dropSpeed, function() {
                     $(this).removeClass('animates');
                     $(this).prev().addClass('animates');
                     $(this).fadeOut();
@@ -258,7 +258,6 @@ var itsChristmas = {
                     'id': 'clone' + itsChristmas.counter
                 }).addClass('cloned').css({
                     'margin-left': newPos,
-                    'width': '135px',
                     'position': 'absolute',
                     'top': '-50px'
                 }).insertAfter('.clone-box');

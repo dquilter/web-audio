@@ -10,13 +10,12 @@
 </head>
 
 <body>
-    <div class="hblock"></div>
+    <div class="hblock">
+    </div>
     
-    <header></header>
-    <h1 class="hit-msg hit-msg-pop">Its Rock &amp; Roll time <i class="fa fa-hand-spock-o"></i></h1>
-
-    <div class="points" style="display:none;"></div>
-    <div class="ptext" style="display:none;">0</div>
+    <div class="points" style="display:none;">
+        <div class="ptext" style="display:none;">0</div>
+    </div>
     <div class="etext" style="display:none;">0</div>
 
     <div>
@@ -57,13 +56,13 @@
         </div>
 
         <div class="button-container" style="visibility:hidden">
-            <a href="#" class="button green" data-note="0"><i class="fa fa-music fa-3"></i></a>
-            <a href="#" class="button red" data-note="1"><i class="fa fa-music"></i></a>
-            <a href="#" class="button yellow" data-note="2"><i class="fa fa-music"></i></a>
-            <a href="#" class="button blue" data-note="3"><i class="fa fa-music"></i></a>
-            <a href="#" class="button orange" data-note="4"><i class="fa fa-music"></i></a>
-            <a href="#" class="button purple" data-note="5"><i class="fa fa-music"></i></a>
-            <a href="#" class="button" data-note="6"><i class="fa fa-music"></i></a>
+            <a href="#" class="button green" data-note="0"></a>
+            <a href="#" class="button red" data-note="1"></a>
+            <a href="#" class="button yellow" data-note="2"></a>
+            <a href="#" class="button blue" data-note="3"></a>
+            <a href="#" class="button orange" data-note="4"></a>
+            <a href="#" class="button purple" data-note="5"></a>
+            <a href="#" class="button" data-note="6"></a>
         </div>
         <div class="stage">
             <p class="hit-msg-pop">LEVEL <em>1</em></p>
@@ -90,18 +89,13 @@
 
         <div class="img-block">
         </div>
-
-        <div class="speedbox">
-            <label class="slidetext" id="stext">Speed</label>
-            <input type="range" id="slider" class="vHorizon" min="100" max="3000" step="100" style="background-color: #00aec8; width: 50%;">
-            <label name="slider-text" id="slider-text" class="slidetext" class="text" value="1000">1000</label>
-
-<!--            <div class="instructions">Press spacebar</div>-->
-        </div>
-        
-
     </main>
-    <script src="js/audio.js"></script>
+
+<div class="stars-bottom"></div>
+<div class="stars"></div>
+<div class="twinkling"></div>
+<div class="clouds"></div>
+    <script src=" js/audio.js"></script>
     <!--    <script src="js/greensock.js"></script>-->
 </body>
 
