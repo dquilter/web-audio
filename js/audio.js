@@ -53,18 +53,19 @@ var itsChristmas = {
     getDate: function() {
         var date = new Date();
         var month = date.getMonth()+1;
-        var day = date.getDate();
-
-        var currentDate = (day<10 ? '0' : '') + day + '/' +
-            (month<10 ? '0' : '') + month + '/' +  date.getFullYear();
-        var christmasDate = '25/12/2015';
+        var day = date.getUTCDate();
+        console.log(day);
+        var currentDate = (month<10 ? '0' : '') + month + '/' + (day<10 ? '0' : '') + day + '/' +  date.getFullYear();
+        var christmasDate = '12/25/2015';
         var daystillchristmas = calcDiff(currentDate, christmasDate);
-
-        $('#merry-xmas span').empty().append(daystillchristmas);
+        console.log(Math.floor(daystillchristmas));
+        $('#merry-xmas span').empty().append(Math.floor(daystillchristmas));
 
         function parseDate(str) {
             var mdy = str.split('/')
-            return new Date(mdy[2], mdy[0]-1, mdy[1]);
+            
+        console.log(new Date(mdy[2], mdy[0], mdy[1]));
+            return new Date(mdy[2], mdy[0], mdy[1]);
         }
 
         function calcDiff(first, second) {
@@ -105,6 +106,7 @@ var itsChristmas = {
         }, 1500);
     },
     setupStages: function() {
+        itsChristmas.getDate();
         itsChristmas.playGame(0,function(){
             itsChristmas.playGame(1,function(){
                 itsChristmas.playGame(2,function(){
