@@ -50,6 +50,28 @@ var itsChristmas = {
             }
         });
     },
+    getDate: function() {
+        var date = new Date();
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+
+        var currentDate = (day<10 ? '0' : '') + day + '/' +
+            (month<10 ? '0' : '') + month + '/' +  date.getFullYear();
+        var christmasDate = '25/12/2015';
+        var daystillchristmas = calcDiff(currentDate, christmasDate);
+
+        $('#merry-xmas span').empty().append(daystillchristmas);
+
+        function parseDate(str) {
+            var mdy = str.split('/')
+            return new Date(mdy[2], mdy[0]-1, mdy[1]);
+        }
+
+        function calcDiff(first, second) {
+            return (parseDate(second)-parseDate(first))/(1000*60*60*24);
+        }
+
+    },
     gameStageInfo: [
         {
             speed : 1200,
@@ -86,7 +108,8 @@ var itsChristmas = {
         itsChristmas.playGame(0,function(){
             itsChristmas.playGame(1,function(){
                 itsChristmas.playGame(2,function(){
-                    console.log('end');
+                    itsChristmas.getDate();
+                    $('#merry-xmas').show();
                 });
             });
 
@@ -375,7 +398,7 @@ var itsChristmas = {
                                 $(clonedElem).removeClass('highlight');
                                 $(clonedElem).addClass('error');
                                 console.log('error');
-                                var boingArray = [800, 'square', 0.2, 1.2, 1.3];
+                                var boingArray = [100, 'square', 0.2, 1.2, 1.3];
                                 itsChristmas.createDingNew(clonedElem,boingArray);
                                 //console.log('curPos:' + curPos  + 'htop:' + htop + ' hbot:' + hbot);
                                 var max =  itsChristmas.pointResponse[2].length;
