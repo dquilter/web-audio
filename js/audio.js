@@ -9,6 +9,7 @@ var itsChristmas = {
     newOpacity: null,
     points: 0,
     speed: 1000,
+    _soundArray: [],
     init: function () {
         $('#slider').on('change', function () {
             $('#slider-text').text($('#slider').val());
@@ -54,7 +55,6 @@ var itsChristmas = {
         var date = new Date();
         var month = date.getMonth()+1;
         var day = date.getUTCDate();
-        console.log(day);
         var currentDate = (month<10 ? '0' : '') + month + '/' + (day<10 ? '0' : '') + day + '/' +  date.getFullYear();
         var christmasDate = '12/25/2015';
         var daystillchristmas = calcDiff(currentDate, christmasDate);
@@ -76,7 +76,7 @@ var itsChristmas = {
     gameStageInfo: [
         {
             speed : 1200,
-            soundFactors : ['square', 0.2, 1.2, 1.5]
+            soundFactors : ['sine', 0.2, 1.2, 1.5]
         },
         {
             speed : 1000,
@@ -94,6 +94,7 @@ var itsChristmas = {
         itsChristmas.spacebar(soundFactors);
     },
     playGame: function(index,callback) {
+        $('.hit-msg').hide();
         $(".stage").find('em').text(index+1).end().show(500);
         setTimeout(function() {
             var game_info = itsChristmas.gameStageInfo[index];
@@ -106,7 +107,6 @@ var itsChristmas = {
         }, 1500);
     },
     setupStages: function() {
-        itsChristmas.getDate();
         itsChristmas.playGame(0,function(){
             itsChristmas.playGame(1,function(){
                 itsChristmas.playGame(2,function(){
@@ -342,6 +342,7 @@ var itsChristmas = {
 
     spacebar: function (soundArray) {
         // if spacebar pressed...
+        _soundArray = soundArray;
         $(document).keypress(function (event) {
             if (event.keyCode == 32) {
                 
@@ -362,7 +363,7 @@ var itsChristmas = {
                     var staticElem = $(clonedElem);
                     //console.log(staticElem);
                     var frequency = $(clonedElem).attr("data-note");
-
+                    $('.hit-msg').show();
                     if ($(clonedElem).is('.animates')) {
                         var cElem = $(clonedElem).is('.animates');
                         var curPos = $(clonedElem).offset().top;
@@ -387,7 +388,7 @@ var itsChristmas = {
                             $(clonedElem).removeClass('highlight');
                             $(clonedElem).addClass('correct');
                             var frequencyArray = [itsChristmas.frequencyArray[frequency]];
-                            var depthArray = $.merge(frequencyArray, soundArray);
+                            var depthArray = $.merge(frequencyArray, _soundArray);
                             // itsChristmas.createDingNew(clonedElem,depthArray);
                             itsChristmas.createSound(depthArray);
                             itsChristmas.points += 25;
